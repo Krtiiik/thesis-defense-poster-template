@@ -1,0 +1,271 @@
+% NEEDS TO BE COMPILED WITH pdflatex
+
+\documentclass[portrait,a0paper]{baposter}
+
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{tabto}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage[hyphens]{url}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage{qrcode}
+\usepackage{textcomp}
+
+\newlength{\mytextsize}
+\setlength{\unitlength}{1.0cm}
+
+%###########################################################################################################################
+% Customize here ############################################################################################################
+
+\def\posterTitle{%
+    Such a cool title\\
+    spanning multiple lines
+}
+\def\posterAuthor{%
+    Your Name
+}
+\def\posterSchool{%
+    Faculty of Cool people and Stu(a)ff, University of life
+}
+\def\posterYear{%
+    2042
+}
+\def\posterLogoFaculty{logos/mff-white.pdf}
+\def\posterLogoSchool{logos/uk-white.pdf}
+
+\definecolor{maincolor}{RGB}{210,50,70}
+\definecolor{headercolor}{RGB}{255,255,255}
+\definecolor{textbackgroundcolor}{RGB}{255,255,255}
+\definecolor{highlightcolor}{RGB}{70,150,255}
+\colorlet{highlightbackgroundcolorOne}{red!60!orange!03}
+\colorlet{highlightbackgroundcolorTwo}{red!60!orange!15}
+\def\backgroundcolor{gray!25}
+
+\usepackage[scaled]{helvet}
+% Uncomment for non-serif text font
+% \renewcommand*\familydefault{\sfdefault}
+
+%###########################################################################################################################
+% My own macros and commands ###############################################################################################
+
+% Custom red markings for TODO items
+\newcommand{\todo}[1]{%
+    \textcolor{red}{\textbf{#1}}% Bold and red text
+    \PackageWarning{TODO}{#1}% Warning in LaTeX log
+}
+% Custom headerbox command to left-align text
+\newcommand{\leftalignedheaderbox}[3]{\headerbox{#1}{#2}{%
+    % Uncomment for left-aligned text
+    % \RaggedRight{%
+    #3
+    % }
+}}
+% Custom headerbox command with highlighted background
+\newcommand{\highlightheaderbox}[3]{\leftalignedheaderbox{#1}{#2,%
+boxColorOne=highlightbackgroundcolorOne,boxColorTwo=highlightbackgroundcolorTwo%
+}{#3}}
+% Custom headerbox without a header, intended for additional info at the bottom of the poster
+\newcommand{\footerbox}[2]{\headerbox{}{#1,%
+above=bottom,borderColor=maincolor,boxheaderheight=1pt%
+}{#2}}
+% Text highlighting
+\newcommand{\highlight}[1]{\textbf{\color{highlightcolor}#1}}
+
+%###########################################################################################################################
+\begin{document}
+\begin{poster}
+{
+    grid=true, % Debugging or Layour grid
+    eyecatcher=false, % Custom main header
+    columns=6, % for flexibility -- changing 2/3 columns with columnspan
+    %
+    background=plain,
+    bgColorOne=\backgroundcolor,
+    %
+    headerfont=\bf\Large\sffamily,
+    headerFontColor=headercolor,
+    headershape=rectangle,
+    headershade=plain,
+    headerColorOne=maincolor,
+    headerborder=open,
+    %
+    boxshade=shadetb,
+    boxColorOne=textbackgroundcolor,
+    boxColorTwo=textbackgroundcolor,
+    textborder=rectangle,
+    borderColor=maincolor,
+    boxpadding=1em
+}{}{
+    % poster title
+    \hspace*{-0.5mm}
+    \begin{picture}(23.7, 3)
+    \fboxsep0pt
+    \put(-0.196, -0.6){\colorbox{maincolor}{\rule[96pt]{675.82pt}{0pt}}}
+    \thicklines
+    % minipage box for title and authors
+    % Faculty logo
+    \put(0.24,-0.24){\includegraphics[height=75pt]{\posterLogoFaculty}}
+    \put(2.55, 2.35){
+        \begin{minipage}[t][96pt]{0.75\textwidth}
+        \begin{center}
+        {\huge\bf\color{headercolor}\sffamily%
+            \posterTitle \\[0.35cm]
+        }
+        {\large\color{headercolor}\sffamily%
+            \posterAuthor
+            \raisebox{0.1em}{$\bigm\lvert$}
+            \posterSchool
+            \raisebox{0.1em}{$\bigm\lvert$}
+            \posterYear
+            \\
+        }
+        \end{center} 
+        \end{minipage}}
+    \put(20.52,-0.24){\includegraphics[height=75pt]{\posterLogoSchool}}
+    \end{picture} 
+}{}{}
+% ==========================================================================================================================
+% Footer ===================================================================================================================
+% Puting the footer first might seem counter-intuitive but trust me on this one.
+% In order to reference the footer elements for bottom-alignments, the footer boxes need to be defined first.
+\footerbox{%
+name=repository,column=2,span=4%
+}{
+    \begin{minipage}{.17\textwidth}
+        \begin{center}
+            \qrcode[height=2cm]{https://github.com/tkohout/OSTRAJava}%
+        \end{center}
+    \end{minipage}%
+    \begin{minipage}{.66\textwidth}
+        \textbf{\large\sffamily\color{maincolor}Repository}
+        \\[0.25em]
+        \scriptsize\url{https://github.com/tkohout/OSTRAJava}
+        % \vfill\hrule\vfill
+        \vspace{0.55em}\hrule\vspace{0.55em}
+        \hfill\textbf{\large\sffamily\color{maincolor}Thesis}
+        \\[0.25em]
+        \scriptsize\url{http://such.a.valid.url/\&why=are\_you\%concerned?}
+    \end{minipage}%
+    \begin{minipage}{.17\textwidth}
+        \begin{center}
+            % If the thesis URL is short, I would right align it also: BTW I have no idead why the \phantom{a} helps,
+            % but it helped me, so might aswell leave it for other unfortunate souls
+            % \phantom{a}\hfill%
+            \qrcode[height=2cm]{https://www.youtube.com/watch?v=dQw4w9WgXcQ}%
+        \end{center}
+    \end{minipage}%
+}
+\footerbox{%
+name=supervisor,column=0,span=2,aligned=repository% Although this box is to the left of the aligning box,
+% and thus would be logical to define it first, the QR codes were messy when I worked on this template
+% so I leave the QR codes box to choose its height and then alighn this one next to it.
+}{
+    % By all means, laugh away at the brutal by-hand vertical spacing...
+    % But then also feel free to change it.
+    \textbf{\sffamily\large\color{maincolor}Supervisor}
+    \\[0.4em]
+    {\large SNPrmi. Perry, PLTPS}
+    \\[0.1em]
+    Department of Such Nice People (really mean it), University of Australia
+}
+% ==========================================================================================================================
+\leftalignedheaderbox{Intro}{%
+name=intro,column=0,row=0,span=3% Note the `name` value, used later for layout definition
+}{
+    This is the most important sentence of the whole poster.
+    This is the second most important sentence of the poster.
+    If you are lucky and a talented writer,
+    someone might still be reading this sentence.
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\leftalignedheaderbox{Goals}{
+name=goals,column=0,span=3,below=intro% Note how `below` defines that this box is exactly below the intro box
+}{
+    \begin{itemize}[leftmargin=*]
+        \item 
+            Do something cool.
+        
+        \item
+            Optionally, do something even cooler which was never done before (to the best of the authors' knowledge).
+
+        \item
+            Should the weather be favorable, expose ourselves to a bit of sunlight.
+    \end{itemize}
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\leftalignedheaderbox{Motivation}{
+name=motivation,column=3,span=3,aligned=goals% Note how `aligned` defines that this box starts exactly with the specified box
+}{
+    One day I woke and felt the urge to do this work...
+    Call it god's work or divine calling, I don't care.
+    However, because we all need some motivation; you can do this, I believe in you!
+    This was supposed to be about me getting motivated or something
+    --- but it really is you who should be getting motivated.
+    Anyway, this text is finally longer than the neighboring box and I can proceed further...
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\highlightheaderbox{Solution approach}{% Note how this box is highlighted
+name=solutionApproach,column=1,row=0.4,span=4
+% Note how `row` defines an arbitrary vertical placement in the layout
+% - see the `grid` option of the `poster` environment to enable the layout grid
+% Note how the combination of the `column` and `span` options places the box at a central position
+% However, for a "central result box" layout, I suggest changing the `columns` option of the `poster` environment
+% to a different value, allowing for better ratios between spanning columns.
+}{
+    This is where I'd put my solution approach to the problem,
+    if I knew how to approach it.
+    This could really be an important text which the reader could read.
+    $$
+        1 \overset{\text{?}}{=} \sum_{i=1}^\infty i - \sum_{i=2}^\infty i
+    $$
+
+    If the reader was drawn by the intriguing centerpiece equation,
+    they shall read this next... I hope... maybe... who knows...
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\highlightheaderbox{Experiments}{%
+name=ssira,column=0,span=3,above=supervisor,row=0.7% Note how `above` defines that this box ends exactly above the specified box
+}{
+    I did so many experiments I cannot remember why.
+    \begin{quote}
+    I can't recall the taste of food, nor the sound of water, nor the touch of grass.
+    I'm naked in the dark.
+    There's nothing--no veil between me and the wheel of fire.
+    I can see him with my waking eyes.
+    \end{quote}
+    
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\highlightheaderbox{Experiments}{%
+name=experiments,column=0,span=3,above=supervisor,row=0.7% Note how `above` defines that this box ends exactly above the specified box
+}{
+    I did so many experiments I cannot remember why.
+    \begin{quote}
+    I can't recall the taste of food, nor the sound of water, nor the touch of grass.
+    I'm naked in the dark.
+    There's nothing--no veil between me and the wheel of fire.
+    I can see him with my waking eyes.
+    \end{quote}
+    If you don't feel like Frodo during this famous quote,
+    you almost certainly did something wrong during the writing process of your thesis.
+    Not to say you should redo, but maybe re-evaluate how you spend your free time.
+}
+% --------------------------------------------------------------------------------------------------------------------------
+\highlightheaderbox{Summary}{%
+name=summary,column=3,span=3,above=repository,row=0.6, bottomaligned=experiments% Note how `bottomaligned` defines that this box ends exactly where the specified box ends
+}{
+    So this was fun.
+    I will miss you.
+    No really, it has been lonely lately.
+    Anyway, I forgot to put an image somewhere up there... so there it is.
+
+    \begin{center}
+        \includegraphics{img/HackerMole.jpg}
+    \end{center}
+}
+\end{poster}
+\end{document}
