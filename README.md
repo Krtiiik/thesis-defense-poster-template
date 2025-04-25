@@ -14,4 +14,4 @@ The header formatting was taken and modified from the [Overleaf CERN poster temp
 The logos of the Faculty of Mathematics and Physics, Charles University and the university itself
 were taken from the [simple-poster template](https://github.com/mff-cuni-cz/simple-poster).
 
-See the [poster.pdf](output PDF file) for results.
+See the [output PDF file](poster.pdf) for results.
